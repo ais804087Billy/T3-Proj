@@ -1,0 +1,1187 @@
+<title> Level 1 </title>
+
+<!-- copy and paste the next 2 lines to setup the sound files, you must modify the loadsoundchrome.js file with your sounds -->
+<script type="text/javascript" src="script/soundmanager2.js"></script>
+<script type="text/javascript" src="script/loadsoundchrome.js"></script>
+<!-- Stop copying here -->
+
+<center>
+    <script type="text/javascript" src="script/processing-1.4.1.js"></script>
+    <script type="text/processing" data-processing-target="mycanvas">
+
+/* @pjs globalKeyEvents = "true"; */
+
+
+// YELLOW - 1   ;   BLUE - 2    ;    RED -  3    
+
+PImage red[] = new PImage[9];
+PImage blue[] = new PImage[9];
+PImage yellow[] = new PImage[9];
+
+PImage gun[] = new PImage[4];
+PImage map1;
+PImage portal1;
+PImage portal2;
+PImage end;
+PImage info;
+
+String character;
+
+int heart;
+
+int blade1;
+int blade2;
+int blade3;
+
+int blade1action;
+int blade2action;
+int blade3action;
+
+int canon1;
+int canon2;
+
+int canon1action;
+int canon2action;
+
+int x;
+int y;
+int time;
+int n;
+int t;
+
+int guntime;
+
+int bladed1;
+int bladed2;
+int bladed3;
+int canond1;
+int canond2;
+
+boolean death;
+boolean death1;
+boolean death2;
+boolean death3;
+boolean death4;
+boolean death5;
+
+int lock;
+int soundlock;
+int gun1lock;
+int gun2lock;
+int portallock;
+
+boolean move;
+
+void setup()
+{  
+	size(600,800);  
+	character = (int)sessionStorage.transferx1;
+
+	n=1;
+	while(n <= 9)
+	{
+		yellow[n] = loadImage("yellowPic/"+n+".png");
+		blue[n] = loadImage("bluePic/"+n+".png");
+		red[n] = loadImage("redPic/"+n+".png");
+		n = n + 1;
+	}
+
+	n=1;
+	while(n <= 4)
+	{
+		gun[n] = loadImage("bullet/"+n+".png");
+		n = n + 1;
+	}
+	
+	map1 = loadImage("pic/lv1.png");
+	portal1 = loadImage("pic/portal1.png");
+	portal2 = loadImage("pic/portal2.png");
+	heartimg = loadImage("pic/heart.png");
+	end= loadImage("pic/end.png");
+	info= loadImage("pic/info.png");
+	
+	blade1 = 273;
+	blade2 = 213;
+	blade3 = -6;
+
+	canon1 = 208;
+	canon2 = 268;
+
+	x = 35; 
+	y = 720;
+	
+	if (character == 1)
+	{
+		heart = 5;
+	}
+	if (character == 2)
+	{
+		heart = 3;
+	}
+	if (character == 3)
+	{
+		heart = 2;
+	}
+	
+	death = false;
+	death1 = false;
+	death2 = false;
+	death3 = false;
+	death4 = false;
+	death5 = false;
+				
+	lock = 0;
+	soundlock = 0;
+	portallock =0;
+	
+	time = 0;
+	
+}  
+
+
+void draw()
+{
+	gun1lock = 0;
+	gun2lock = 0;
+	
+	size(600,800);  
+	background(144,270,144);
+	frameRate( 30 );		
+
+	image(map1,0,0,600,800);
+	
+////////////I want better portal /////////////////////////////////////////////////////////
+	
+	image(portal2,27,151,80,80);
+	image(portal1,346,340,80,80);
+	image(end,470,80,120,90);
+	
+	
+	image(info,80,80,80,80);
+
+
+//blade
+	noStroke()	
+	fill(255,0,0,120);
+	triangle(319,536,319,571,blade2,536);
+	triangle(172,536,172,571,blade1,571);
+	triangle(100,303,100,338,blade3,303);
+
+
+//life system
+	if (death1 == true)
+	{
+		heart = 4;
+	}
+	
+	 if (death2 == true)
+	{
+	 	heart = 3;
+	}
+	
+	if (death3 == true)
+	{	
+	 	heart = 2;
+	}
+	
+	if (death4 == true)
+	{	
+	 	heart = 1;
+	}
+	
+	if (death5 == true)
+	{	
+	 	heart = 0;
+	 	link("Game OVer.html");
+	}
+	
+//background music
+	if(soundlock ==0)
+	{	
+		soundlock =1;
+		soundManager.setVolume('s4',20);
+		soundManager.play('s4');
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+//blade1 actions
+	if(blade1action == 1)
+	{
+		blade1 = blade1 + 7;
+	}
+
+	if(blade1action == 2)
+	{
+		blade1 = blade1 - 7;
+	}
+
+	if(blade1 >= 273)
+	{
+		blade1action = 2;
+	}
+	
+	if(blade1 <= 172)
+	{
+		blade1action = 1;
+	}
+
+//blade2 actions
+	if(blade2action == 1)
+	{
+		blade2 = blade2 - 7;
+	}
+
+	if(blade2action == 2)
+	{
+		blade2 = blade2 + 7;
+	}
+
+	if(blade2 <= 213)
+	{	
+		blade2action = 2;
+	}
+	
+	if(blade2 >= 314)
+	{
+		blade2action = 1;
+	}
+
+//blade2 actions
+	if(blade3action == 1)
+	{
+		blade3 = blade3 - 7;
+	}
+
+	if(blade3action == 2)
+	{
+		blade3 = blade3 + 7;
+	}
+
+	if(blade3 <= -6)
+	{
+		blade3action = 2;
+	}
+	
+	if(blade3 >= 100)
+	{
+		blade3action = 1;
+	}
+
+
+
+//canons
+	n = 1;
+	t = 0; 
+	while(n <= 4)
+	{
+		if((guntime >= t) && (guntime <= t + 10))
+		{
+			image(gun[n],canon1,276,40,40);
+			image(gun[n],canon2,320,40,40);
+		}
+	
+	
+		n	= n + 1;
+		t = t + 10;
+		
+	}
+	guntime = guntime + 9;
+	
+	
+	if(guntime >= 40)
+	{
+		guntime = 0;
+	}
+
+//canon1 action
+	
+	if(canon1 < -2 && gun1lock == 0)
+	{
+		soundManager.stop('s5');
+		canon1 = 208;
+		gun1lock = 1;
+		soundManager.setVolume('s5',10);
+		soundManager.play('s5');
+	}
+
+
+	canon1 = canon1 - 13;
+
+
+
+
+
+
+
+
+//canon2 actions
+	canon2action = 1;
+	
+	if(canon2 > 602 && gun2lock ==0)
+	{
+		soundManager.stop('s9');
+		canon2 = 268;
+		gun2lock = 1;
+		soundManager.setVolume('s9',10);
+		soundManager.play('s9');
+	}
+
+	if(canon2action == 1)
+	{
+		canon2 = canon2 + 13;
+	}
+
+
+
+
+
+//dying and respawning
+	if(death == true )
+	{	
+		soundManager.play('s0');
+		x =35;
+		y = 740;
+		death = false;
+	}
+
+
+
+
+
+
+	
+//counting number of lives	
+	if( heart == 5 )
+	{
+		image(heartimg,340,670,90,60);
+		image(heartimg,370,670,90,60);
+		image(heartimg,400,670,90,60);
+		image(heartimg,430,670,90,60);
+		image(heartimg,460,670,90,60);
+	}
+
+	if( heart == 4 )
+	{
+		image(heartimg,340,670,90,60);
+		image(heartimg,370,670,90,60);
+		image(heartimg,400,670,90,60);
+		image(heartimg,430,670,90,60);
+	}
+
+	if( heart == 3 )
+	{
+		image(heartimg,340,670,90,60);
+		image(heartimg,370,670,90,60);
+		image(heartimg,400,670,90,60);
+	}
+
+	if( heart == 2 )
+	{	
+		image(heartimg,340,670,90,60);
+		image(heartimg,370,670,90,60);
+	}
+
+	if( heart == 1 )
+	{
+		image(heartimg,340,670,90,60);
+	}
+
+
+
+//moving	
+	if(death == false)
+	{	
+		if (keyPressed == false)
+		{
+			if (character == 1)
+			{
+				image(yellow[1],x,y,80,80);
+			}
+			if (character == 2)
+			{
+				image(blue[1],x,y,80,80);
+			}	
+			if (character == 3)
+			{
+				image(red[1],x,y,80,80);
+			}
+			move = false;
+		}
+	
+		if (keyPressed == true)
+		{
+
+			if (key == 'w')
+			{
+				if (character == 1)
+				{
+					y = y - 6;
+				}
+				if (character == 2)
+				{
+					y = y - 9;
+				}
+				if (character == 3)
+				{
+					y = y - 15;
+				}
+				move = true;
+							
+			
+			}
+
+			if (key == 's')
+			{
+				if (character == 1)
+				{
+					y = y + 6;
+				}
+				if (character == 2)
+				{
+					y = y + 9;
+				}
+				if (character == 3)
+				{
+					y = y + 15;
+				}
+				move = true;
+				
+			}
+	
+			if (key == 'a')
+			{	
+				if (character == 1)
+				{
+					x = x - 6;
+				}
+				if (character == 2)
+				{
+					x = x - 9;
+				}
+				if (character == 3)
+				{
+					x = x - 15;
+				}
+				move = true;
+			}
+	
+			if (key == 'd')
+			{
+				if (character == 1)
+				{
+					x = x + 6;
+				}
+				if (character == 2)
+				{
+					x = x + 9;
+				}
+				if (character == 3)
+				{
+					x = x + 15;
+				}
+				move = true;
+
+
+			}
+
+		}		
+		if (move == true)
+		{
+			
+				n = 1;
+				t = 0; 
+				while(n <= 9)
+				{
+					if((time >= t) && (time <= t + 10))
+					{
+						if (character == 1)
+						{	
+							image(yellow[n],x,y,80,80);
+						}
+						if (character == 2)
+						{
+							image(blue[n],x,y,80,80);
+						}
+						if (character == 3)
+						{
+							image(red[n],x,y,80,80);
+						}
+					}		
+					n	= n + 1;
+					t = t + 10;
+			
+				}
+			
+				time = time + 10;
+			
+				if (time >= 90)
+				{
+					time = 0;
+				}	
+		}
+	}
+
+  //THIS IS DEATH == false
+
+
+stroke(255,255,255);
+strokeWeight(5);
+//line(0,720,400,720);
+//line(103,0,103,800);
+//line(324,0,324,800);
+//line(0,490,600,490);
+//line(215,0,215,800);
+
+
+//death zones
+	if (103 < x+37 && x+37 < 324 && 700 < y+34 && y+34 < 800)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+
+	if (0 < x+37 && x+37<43 && 640 < y+34 && y+34<800)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (0 < x+37 && x+37 < 215 && 460 <y+34 && y+34<659)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (275<x+37 && x+37<600 && 460<y+34 && y+34<800)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (0<x+37 && x+37<16 && 0<y+34 && y+34<800)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+	
+
+	if (74<x+37 && x+37< 320 && 241<y+34 && y+34<428)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (450 <x+37 && x+37<495 && 241<y+34 && y+34<428)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (0<x+37 && x+37<450 && 0<y+34 && y+34<131)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (125<x+37 && x+37<450 && 0<y+34 && y+34<234)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+	if (554<x+37 && x+37<600 && 189<y+34 && y+34<701)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+
+	if (267<x+37 && x+37<330 && 429<y+34 && y+34<487)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+
+	if (269<x+37 && x+37<335 && 429<y+34 && y+34<488)
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+
+
+//portal
+	if (22<x+37 && x+37<134 && 138<y+34 && y+34<238 && portallock == 0)
+	{
+		soundManager.play('s6');
+		x=358; 
+		y=376;
+		portallock = 1;
+	}
+
+
+	portallock = 0;
+
+
+//distances
+	bladed1 = (int)sqrt(sq((x+37)-(blade1))+sq((y+34)-(571)));
+	bladed2 = (int)sqrt(sq((x+37)-(blade2))+sq((y+34)-(536)));
+	bladed3 = (int)sqrt(sq((x+37)-(blade3))+sq((y+34)-(303)));
+	canond1 = (int)sqrt(sq((x+37)-(canon1))+sq((y+34)-(292.5)));
+	canond2 = (int)sqrt(sq((x+37)-(canon2))+sq((y+34)-(342)));
+    
+//death collisions
+	if(bladed1 <= 25 || bladed2 <= 25 ||  bladed3 <= 25 ||  canond1 <= 10 ||  canond2 <= 10) 
+	{
+		if (heart == 5)
+		{
+			death1 = true;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 4)
+		{
+			death1 = false;
+			death2 = true;
+			death3 = false;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 3)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = true;
+			death4 = false;
+			death5 = false;
+		}
+		if (heart == 2)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = true;
+			death5 = false;
+		}
+		if (heart == 1)
+		{
+			death1 = false;
+			death2 = false;
+			death3 = false;
+			death4 = false;
+			death5 = true;
+		}
+		death = true;
+	}
+
+
+
+
+
+//moving to next level
+	if (442<x+37 && x+37<577 && 63<y+34 && y+34<160)
+	{
+		link("between.html");
+		sessionStorage.transferx1 = character;
+	}
+
+	if(mousePressed == true && mouseButton == RIGHT) 
+	{
+ 	  point(mouseX, mouseY);
+ 	  fill(0,0,0);
+  	  textSize(12);
+  	  text(mouseX + " , "+ mouseY, mouseX-26,mouseY-10); 
+	}
+}
+
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>

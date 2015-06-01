@@ -25,12 +25,12 @@ void setup()
 {  
 
 	PacFont = loadFont("PacFont")
-	background = loadImage("pac.png");
-	gameStart = loadImage("Start.png");
-	redHero = loadImage("redo.png");
-	yellowHero = loadImage("yellowo.png");
-	blueHero = loadImage("blueo.png");
-	instructions = loadImage("play.png");
+	background = loadImage("pic/pac.png");
+	gameStart = loadImage("pic/Start.png");
+	redHero = loadImage("pic/redo.png");
+	yellowHero = loadImage("pic/yellowo.png");
+	blueHero = loadImage("pic/blueo.png");
+	instructions = loadImage("pic/play.png");
 	lock = 0;
 }
 
@@ -44,6 +44,7 @@ void draw()
 	if(lock ==0)
 	{	
 		lock =1;
+		soundManager.setVolume('s1',20);
 		soundManager.play('s1');
 	}
 

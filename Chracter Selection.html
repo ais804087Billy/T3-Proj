@@ -11,9 +11,10 @@
 
 /* @pjs globalKeyEvents = "true"; */
 
-PImage blue;
-PImage yellow;
-PImage red;
+PImage blue[] = new PImage[9];
+PImage yellow[] = new PImage[9];
+PImage red[] = new PImage[9];
+
 PImage background;
 PImage heart;
 PImage speed;
@@ -27,30 +28,46 @@ int yy;
 
 int rx;
 int ry;
+
 int soundlock;
 int lock;
-int blueAction;
 
+int t;
+int n;
+int time;
+
+int blueAction;
 int yellowAction;
+int redAction;
 //0-stop
 //1-moveR
 //2-moveL
 
-int redAction;
+
+int character;
+
 
 void setup()
 {  
 
-	blue = loadImage("blueo.png")
-	yellow = loadImage("yellowo.png")
-	red = loadImage("redo.png")
-	background = loadImage("sel.png")
-	heart = loadImage("heart.png")
-	speed = loadImage("speed.png")
+	n=1;
+	while(n <= 9)
+	{
+		yellow[n] = loadImage("yellowPic/"+n+".png");
+		red[n] = loadImage("redPic/"+n+".png");
+		blue[n] = loadImage("bluePic/"+n+".png");
+		n = n + 1;
+	}
+	
+	
+	
+	background = loadImage("pic/sel.png")
+	heart = loadImage("pic/heart.png")
+	speed = loadImage("pic/speed.png")
 	PacFont = loadFont("PacFont");
 
 	bx = 50;
-	by = 250;
+	by = 220;
 
 	yx = 50;
 	yy = 430;
@@ -69,19 +86,14 @@ void setup()
 void draw()
 {
 
-
-
 //background music
 	if(lock ==0)
 	{
-		lock =1;
-		soundManager.play('s1');
+		lock = 1;
+		soundManager.setVolume('s1',20);
+		soundManager.play('s1');		
 	}
 
-
-
-
-	
 	size(600,800);  
 
 	frameRate( 30 );		
@@ -165,7 +177,9 @@ void draw()
 	{
 		if (10 <mouseX && mouseX<590   && 220<mouseY && mouseY<400)
 		{
-			link("lv1b.html");
+			character = 2;
+			sessionStorage.transferx1 = character;
+			link("lvl1.html");
 		}
 	}
 
@@ -182,7 +196,9 @@ void draw()
 	{
 		if (10 <mouseX && mouseX<590 && 420<mouseY && mouseY<600)
 		{
-			link("lv1y.html");
+			character = 1;
+			sessionStorage.transferx1 = character;
+			link("lvl1.html");
 		}
 	}
 
@@ -196,18 +212,40 @@ void draw()
 
 	if (mousePressed == true && mouseButton == LEFT)
 	{
-		if (10 <mouseX && mouseX<590  && 620<mouseY && mouseY<800)
+		if (10 < mouseX && mouseX < 590  && 620 < mouseY && mouseY < 800)
 		{
-			link("lv1r.html");
+			character = 3;
+			sessionStorage.transferx1 = character;
+			link("lvl1.html");
 		}
 	}
 
 
 	noStroke();
-//blue hero spec  
-	fill(0,0,255);
-	image(blue,bx,by,160,160);
-
+	
+	  
+		n = 1;
+		t = 0; 
+		while(n <= 9)
+		{
+			if((time >= t) && (time <= t + 10))
+			{
+				image(blue[n],bx,by,160,160);
+				image(red[n],rx,ry,160,160);
+				image(yellow[n],yx,yy,160,160);
+			}
+			n	= n + 1;
+			t = t + 10;
+		}
+		time = time + 25;
+		if(time >= 90)
+		{
+				time = 0;
+		}
+		
+		
+		
+//Blue spec
 	image(heart,400,250,90,60);
 	image(heart,430,250,90,60);
 	image(heart,460,250,90,60);
@@ -218,8 +256,7 @@ void draw()
 	image(speed,500,310,60,40);
 
 //yellow hero spec    
-	fill(255,255,0);
-	image(yellow,yx,yy,160,160);
+
 
 	image(heart,400,450,90,60);
 	image(heart,430,450,90,60);
@@ -232,8 +269,7 @@ void draw()
 
 
 //red hero spec
-	fill(255,0,0);
-	image(red,rx,ry,160,160);
+
 
 	image(heart,400,650,90,60);
 	image(heart,430,650,90,60);

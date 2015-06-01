@@ -23,7 +23,7 @@ soundManager.setup({
       }
     });
 
-    var soundURLs = '123,Character,Final round,Game over,Level 1,mgun,nactive,nn,win'.split(',');
+    var soundURLs = '123,Character,Final round,Game over,Level 1,mgun,nactive,nn,win,mgun'.split(',');
     for (var i=0; i<soundURLs.length; i++) {
       soundManager.createSound({
         id: 's'+i,

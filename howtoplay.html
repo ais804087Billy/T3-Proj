@@ -23,10 +23,10 @@ int lock;
 void setup()
 {  
 
-	key = loadImage("key.png")
-	background = loadImage("sel.png")
+	key = loadImage("pic/key.png")
+	background = loadImage("pic/sel.png")
 	PacFont = loadFont("PacFont");
-	end= loadImage("end.png");
+	end= loadImage("pic/end.png");
 	lock = 0;
 
 }  
@@ -47,6 +47,7 @@ void draw()
 	if(lock ==0)
 	{
 		lock =1;
+		soundManager.setVolume('s1',20);
 		soundManager.play('s1');
 	}
 
